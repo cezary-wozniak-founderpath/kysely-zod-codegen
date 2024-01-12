@@ -50,6 +50,8 @@ export class Serializer {
 
       switch (node.type) {
         case NodeType.EXPORT_STATEMENT:
+          data += this.serializeExportStatementZod(node);
+          data += '\n'
           data += this.serializeExportStatement(node);
           break;
         case NodeType.IMPORT_STATEMENT:
@@ -211,9 +213,9 @@ export class Serializer {
 
     data += 'import ';
 
-    if (this.typeOnlyImports) {
-      data += 'type ';
-    }
+    // if (this.typeOnlyImports) {
+    //   data += 'type ';
+    // }
 
     data += '{';
 
@@ -331,6 +333,321 @@ export class Serializer {
       data += this.serializeExpression(arg);
       i++;
     }
+
+    return data;
+  }
+
+
+  /**
+   * ZOD STUFF
+   */
+
+  serializeAliasDeclarationZod(node: AliasDeclarationNode) {
+    const expression =
+      node.body.type === NodeType.TEMPLATE ? node.body.expression : node.body;
+    let data = '';
+
+    data += 'const ';
+    data += node.name;
+
+    // if (node.body.type === NodeType.TEMPLATE) {
+    //   data += '<';
+
+    //   for (let i = 0; i < node.body.params.length; i++) {
+    //     if (i >= 1) {
+    //       data += ', ';
+    //     }
+
+    //     data += node.body.params[i]!;
+    //   }
+
+    //   data += '>';
+    // }
+
+    data += ' = ';
+    data += this.serializeExpressionZod(expression);
+    data += ';';
+
+    return data;
+  }
+
+  serializeArrayExpressionZod(node: ArrayExpressionNode) {
+    const shouldParenthesize =
+      node.values.type === NodeType.UNION_EXPRESSION &&
+      node.values.args.length >= 2;
+    let data = 'z.array(';
+
+    if (shouldParenthesize) {
+      data += 'z.union(';
+    }
+
+    data += this.serializeExpressionZod(node.values);
+
+    if (shouldParenthesize) {
+      data += ')';
+    }
+
+    data += ')';
+
+    return data;
+  }
+
+  serializeExportStatementZod(node: ExportStatementNode) {
+    let data = '';
+
+    data += 'export ';
+
+    switch (node.argument.type) {
+      case NodeType.ALIAS_DECLARATION:
+        return ''
+      case NodeType.INTERFACE_DECLARATION:
+        data += this.serializeInterfaceDeclarationZod(node.argument);
+        break;
+    }
+
+    return data;
+  }
+
+  serializeExpressionZod(node: ExpressionNode) {
+    const res = (() => {
+      switch (node.type) {
+        case NodeType.ARRAY_EXPRESSION:
+          return this.serializeArrayExpressionZod(node);
+        case NodeType.EXTENDS_CLAUSE:
+          return this.serializeExtendsClauseZod(node);
+        case NodeType.GENERIC_EXPRESSION:
+          return this.serializeGenericExpressionZod(node);
+        case NodeType.IDENTIFIER:
+          return this.serializeIdentifierZod(node);
+        case NodeType.INFER_CLAUSE:
+          return this.serializeInferClauseZod(node);
+        case NodeType.LITERAL:
+          return this.serializeLiteralZod(node);
+        case NodeType.MAPPED_TYPE:
+          return this.serializeMappedTypeZod(node);
+        case NodeType.OBJECT_EXPRESSION:
+          return this.serializeObjectExpressionZod(node);
+        case NodeType.UNION_EXPRESSION:
+          return this.serializeUnionExpressionZod(node);
+      }
+    })();
+
+    return res;
+  }
+
+  serializeExtendsClauseZod(node: ExtendsClauseNode) {
+    let data = '';
+
+    data += node.name;
+    data += ' extends ';
+    data += this.serializeExpressionZod(node.test);
+    data += '\n  ? ';
+    data += this.serializeExpressionZod(node.consequent);
+    data += '\n  : ';
+    data += this.serializeExpressionZod(node.alternate);
+
+    return data;
+  }
+
+  serializeGenericExpressionZod(node: GenericExpressionNode) {
+    let data = '';
+
+    // data += node.name;
+    // data += '<';
+
+    for (let i = 0; i < node.args.length; i++) {
+      if (i >= 1) {
+        data += ', ';
+      }
+
+      data += this.serializeExpressionZod(node.args[i]!);
+    }
+
+    // data += '>';
+
+    return data;
+  }
+
+  serializeIdentifierZod(node: IdentifierNode) {
+    switch (node.name) {
+      case 'Json':
+        return 'z.unknown()';
+      case 'boolean':
+        return 'z.boolean()';
+      case 'Date':
+        return 'z.coerce.date()';
+      case 'null':
+        return 'z.null()';
+      case 'Decimal':
+      case 'Int8':
+      case 'number':
+      case 'Numeric':
+        return 'z.coerce.number()';
+      case 'string':
+        return 'z.string()';
+      case 'Timestamp':
+        return 'z.coerce.date()';
+      case 'undefined':
+        return '.optional()';
+    }
+    return node.name;
+  }
+
+  serializeImportClauseZod(node: ImportClauseNode) {
+    let data = '';
+
+    data += node.name;
+
+    if (node.alias) {
+      data += ' as ';
+      data += node.alias;
+    }
+
+    return data;
+  }
+
+  serializeImportStatementZod(node: ImportStatementNode) {
+    let data = '';
+    let i = 0;
+
+    data += 'import ';
+
+    data += '{';
+
+    for (const importClause of node.imports) {
+      if (i >= 1) {
+        data += ',';
+      }
+
+      data += ' ';
+      data += this.serializeImportClauseZod(importClause);
+      i++;
+    }
+
+    data += ' } from ';
+    data += JSON.stringify(node.moduleName);
+    data += ';';
+
+    return data;
+  }
+
+  serializeInferClauseZod(node: InferClauseNode) {
+    let data = '';
+
+    data += 'infer ';
+    data += node.name;
+
+    return data;
+  }
+
+  serializeInterfaceDeclarationZod(node: InterfaceDeclarationNode) {
+    let data = '';
+
+    data += 'const ';
+    data += node.name;
+    data += ' ';
+    data += this.serializeObjectExpressionZod(node.body);
+
+    return data;
+  }
+
+  serializeLiteralZod(node: LiteralNode) {
+    return JSON.stringify(node.value);
+  }
+
+  serializeKeyZod(key: string) {
+    return IDENTIFIER_REGEXP.test(key) ? key : JSON.stringify(key);
+  }
+
+  serializeMappedTypeZod(node: MappedTypeNode) {
+    let data = '';
+
+    data += '{\n  [K in string]?: ';
+    data += this.serializeExpressionZod(node.value);
+    data += ';\n}';
+
+    return data;
+  }
+
+  serializeObjectExpressionZod(node: ObjectExpressionNode) {
+    let data = '';
+
+    data += '= z.object({';
+
+    if (node.properties.length) {
+      data += '\n';
+
+      for (const property of node.properties) {
+        data += '  ';
+        data += this.serializePropertyZod(property);
+      }
+    }
+
+    data += '})';
+
+    return data;
+  }
+
+  serializePropertyZod(node: PropertyNode) {
+    let data = '';
+
+    data += this.serializeKeyZod(node.key);
+    data += ': ';
+    data += this.serializeExpressionZod(node.value);
+    data += ',\n';
+
+    return data;
+  }
+
+  serializeNullableExpressionZod(node: UnionExpressionNode) {
+
+    const [first, second] = node.args
+
+
+    // this is just to make ts happy
+    if (!first || !second) {
+      return '';
+    }
+
+    let data: string = this.serializeExpressionZod(first);
+
+    // again, this shouldn't happen. in sql, we can't really union different values types.
+    // so the second expression is pretty much always a null
+    if (second.type !== NodeType.IDENTIFIER) {
+      return data
+    }
+
+    if (second.name !== 'null') {
+      return data
+    }
+
+    data += '.nullish()';
+
+    return data;
+  }
+
+  serializeUnionExpressionZod(node: UnionExpressionNode) {
+
+    if (node.args.length === 2) {
+      return this.serializeNullableExpressionZod(node)
+    }
+
+    let data = 'z.enum([';
+    let i = 0;
+
+    for (const arg of node.args) {
+      if (i >= 1) {
+        data += ', ';
+      }
+
+      const exp = this.serializeExpressionZod(arg);
+
+      data += exp
+
+      i++;
+    }
+
+    data += '])';
 
     return data;
   }

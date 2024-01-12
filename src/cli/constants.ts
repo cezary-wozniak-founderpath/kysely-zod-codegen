@@ -1,13 +1,7 @@
 import { join } from 'path';
 import { LogLevel } from '../core';
 
-export const DEFAULT_OUT_FILE = join(
-  process.cwd(),
-  'node_modules',
-  'kysely-codegen',
-  'dist',
-  'db.d.ts',
-);
+export const DEFAULT_OUT_FILE = join(process.cwd(), 'db.ts');
 
 export const DEFAULT_LOG_LEVEL = LogLevel.WARN;
 

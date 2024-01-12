@@ -219,6 +219,11 @@ export class Transformer {
       importNodes.push(new ImportStatementNode(moduleName, symbolImports!));
     }
 
+    // import zod
+    importNodes.push(
+      new ImportStatementNode('zod', [new ImportClauseNode('z')]),
+    );
+
     return importNodes.sort((a, b) => a.moduleName.localeCompare(b.moduleName));
   }
 

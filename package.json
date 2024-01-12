@@ -1,36 +1,29 @@
 {
-  "name": "kysely-codegen",
-  "version": "0.12.0",
-  "author": "Robin Blomberg",
+  "name": "@maktouch/kysely-zod-codegen",
+  "version": "0.1.1",
+  "author": "Makara Sok",
   "license": "MIT",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "kysely-codegen": "./dist/cli/bin.js"
+    "kysely-zod-codegen": "./dist/bin/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RobinBlomberg/kysely-codegen.git"
+    "url": "git+https://github.com/maktouch/kysely-zod-codegen.git"
   },
   "bugs": {
-    "url": "https://github.com/RobinBlomberg/kysely-codegen/issues"
+    "url": "https://github.com/maktouch/kysely-zod-codegensues"
   },
-  "homepage": "https://github.com/RobinBlomberg/kysely-codegen#readme",
+  "homepage": "https://github.com/maktouch/kysely-zod-codegendme",
   "scripts": {
     "build": "tsc",
     "dev": "ts-node-dev --quiet --respawn ./src/cli/bin.ts",
     "docker:up": "docker-compose up -d",
-    "fix": "run-s fix:*",
-    "fix:eslint": "eslint --fix src",
-    "fix:prettier": "prettier --write src",
-    "lint": "run-p lint:*",
-    "lint:eslint": "eslint src",
-    "lint:prettier": "prettier --check src",
-    "prepublishOnly": "pnpm test && pnpm build",
-    "start": "node ./dist/cli/bin.js",
-    "test": "ts-node-dev ./src/index.test.ts",
-    "test:watch": "ts-node-dev --quiet --respawn ./src/index.test.ts",
-    "upgrade": "ncu -u"
+    "prepublishOnly": "yarn build",
+    "start": "node ./dist/bin/index.js",
+    "test": "ts-node-dev ./src/tests/index.test.ts",
+    "test:watch": "ts-node-dev --quiet --respawn ./src/tests/index.test.ts"
   },
   "dependencies": {
     "chalk": "4.1.2",
@@ -66,7 +59,8 @@
     "kysely-bun-worker": "^0.5.3",
     "kysely": ">=0.19.12",
     "mysql2": "^2.3.3 || ^3.0.0",
-    "pg": "^8.8.0"
+    "pg": "^8.8.0",
+    "zod": ">=3.21.0"
   },
   "peerDependenciesMeta": {
     "@libsql/kysely-libsql": {
@@ -83,6 +77,9 @@
     },
     "pg": {
       "optional": true
+    },
+    "zod": {
+      "optional": false
     }
   },
   "eslintConfig": {
