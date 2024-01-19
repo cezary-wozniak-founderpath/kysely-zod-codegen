@@ -41,6 +41,10 @@ export class ConnectionStringParser {
       return 'postgres';
     }
 
+    if (connectionString.startsWith('bigquery')) {
+      return 'bigquery'
+    }
+
     return 'sqlite';
   }
 

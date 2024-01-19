@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { LogLevel } from '../core';
 
-export const DEFAULT_OUT_FILE = join(process.cwd(), 'db.ts');
+export const DEFAULT_OUT_FILE = join(process.cwd(), 'debug/db.ts');
 
 export const DEFAULT_LOG_LEVEL = LogLevel.WARN;
 
@@ -15,4 +15,4 @@ export const LOG_LEVEL_NAMES = [
   'debug',
 ] as const;
 
-export const VALID_DIALECTS = ['mysql', 'postgres', 'sqlite', 'libsql'];
+export const VALID_DIALECTS = ['mysql', 'postgres', 'sqlite', 'libsql', 'bigquery'];

@@ -1,4 +1,5 @@
 import {
+  BigqueryDialect,
   BunSqliteDialect,
   LibsqlDialect,
   MysqlDialect,
@@ -8,6 +9,7 @@ import {
 import { Dialect } from './dialect';
 
 export type DialectName =
+  | 'bigquery'
   | 'bun-sqlite'
   | 'libsql'
   | 'mysql'
@@ -20,6 +22,8 @@ export type DialectName =
 export class DialectManager {
   getDialect(name: DialectName): Dialect {
     switch (name) {
+      case 'bigquery':
+        return new BigqueryDialect();
       case 'bun-sqlite':
         return new BunSqliteDialect();
       case 'libsql':

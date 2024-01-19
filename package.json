@@ -1,6 +1,6 @@
 {
   "name": "@maktouch/kysely-zod-codegen",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "Makara Sok",
   "license": "MIT",
   "main": "./dist/index.js",
@@ -20,7 +20,7 @@
     "build": "tsc",
     "dev": "ts-node-dev --quiet --respawn ./src/cli/bin.ts",
     "docker:up": "docker-compose up -d",
-    "prepublishOnly": "yarn build",
+    "prepublishOnly": "pnpm build",
     "start": "node ./dist/bin/index.js",
     "test": "ts-node-dev ./src/tests/index.test.ts",
     "test:watch": "ts-node-dev --quiet --respawn ./src/tests/index.test.ts"
@@ -33,6 +33,8 @@
     "minimist": "^1.2.8"
   },
   "devDependencies": {
+    "@google-cloud/bigquery": "^7.3.0",
+    "@maktouch/kysely-bigquery": "^1.0.3",
     "@robinblomberg/eslint-config-prettier": "^0.1.4",
     "@robinblomberg/eslint-config-robinblomberg": "0.20.0",
     "@robinblomberg/prettier-config": "^0.1.2",
@@ -40,29 +42,37 @@
     "@types/git-diff": "^2.0.7",
     "@types/micromatch": "^4.0.6",
     "@types/minimist": "^1.2.5",
-    "@types/node": "^20.10.3",
+    "@types/node": "^20.11.0",
     "@types/pg": "^8.10.9",
     "@typescript-eslint/parser": "^6.13.1",
     "better-sqlite3": "^9.2.0",
     "eslint": "^8.55.0",
     "kysely": "^0.26.3",
-    "mysql2": "^3.6.5",
+    "mysql2": "^3.7.0",
     "npm-run-all": "^4.1.5",
     "pg": "^8.11.3",
-    "pnpm": "^8.11.0",
+    "pnpm": "^8.14.1",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.3.2"
+    "typescript": "^5.3.3"
   },
   "peerDependencies": {
+    "@google-cloud/bigquery": "^7.3.0",
     "@libsql/kysely-libsql": "^0.3.0",
+    "@maktouch/kysely-bigquery": "^1.0.3",
     "better-sqlite3": ">=7.6.2",
-    "kysely-bun-worker": "^0.5.3",
     "kysely": ">=0.19.12",
+    "kysely-bun-worker": "^0.5.3",
     "mysql2": "^2.3.3 || ^3.0.0",
     "pg": "^8.8.0",
-    "zod": ">=3.21.0"
+    "zod": ">=3.22.4"
   },
   "peerDependenciesMeta": {
+    "@maktouch/kysely-bigquery": {
+      "optional": true
+    },
+    "@google-cloud/bigquery": {
+      "optional": true
+    },
     "@libsql/kysely-libsql": {
       "optional": true
     },
