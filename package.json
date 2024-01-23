@@ -1,12 +1,12 @@
 {
   "name": "@maktouch/kysely-zod-codegen",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "author": "Makara Sok",
   "license": "MIT",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "kysely-zod-codegen": "./dist/bin/index.js"
+    "kysely-zod-codegen": "./dist/cli/bin.js"
   },
   "repository": {
     "type": "git",
@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/maktouch/kysely-zod-codegensues"
   },
-  "homepage": "https://github.com/maktouch/kysely-zod-codegendme",
+  "homepage": "https://github.com/maktouch/kysely-zod-codegen",
   "scripts": {
     "build": "tsc",
     "dev": "ts-node-dev --quiet --respawn ./src/cli/bin.ts",
