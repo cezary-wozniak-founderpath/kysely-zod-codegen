@@ -605,7 +605,12 @@ export class Serializer {
     data += this.serializeExpressionZod(node.value);
 
     if (node.description && node.description.length > 0) {
-      data += `.describe(${JSON.stringify(node.description)})`
+      const description = JSON.stringify(node.description)
+
+      if (description.length > 2) {
+        data += `.describe(${description})`
+      }
+
     }
 
     data += ',\n';

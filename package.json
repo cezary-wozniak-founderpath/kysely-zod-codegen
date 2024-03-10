@@ -1,6 +1,6 @@
 {
   "name": "@maktouch/kysely-zod-codegen",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": "Makara Sok",
   "license": "MIT",
   "main": "./dist/index.js",
@@ -18,7 +18,7 @@
   "homepage": "https://github.com/maktouch/kysely-zod-codegen",
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node-dev --quiet --respawn ./src/cli/bin.ts --include-pattern=company_metrics",
+    "dev": "ts-node-dev --quiet --respawn ./src/cli/bin.ts",
     "docker:up": "docker-compose up -d",
     "prepublishOnly": "pnpm build",
     "start": "node ./dist/bin/index.js",
