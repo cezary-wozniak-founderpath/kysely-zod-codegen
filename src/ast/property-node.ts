@@ -5,9 +5,11 @@ export class PropertyNode {
   readonly key: string;
   readonly type = NodeType.PROPERTY;
   readonly value: ExpressionNode;
+  readonly description?: string
 
-  constructor(key: string, value: ExpressionNode) {
+  constructor(key: string, value: ExpressionNode, description?: string) {
     this.key = key;
     this.value = value;
+    this.description = description
   }
 }

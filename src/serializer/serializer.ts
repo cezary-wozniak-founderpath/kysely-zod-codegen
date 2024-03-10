@@ -135,6 +135,7 @@ export class Serializer {
   }
 
   serializeExpression(node: ExpressionNode) {
+
     switch (node.type) {
       case NodeType.ARRAY_EXPRESSION:
         return this.serializeArrayExpression(node);
@@ -299,6 +300,10 @@ export class Serializer {
 
   serializeProperty(node: PropertyNode) {
     let data = '';
+
+    if (node.description && node.description.length > 0) {
+      data += `/** ${node.description} */` + '\n  '
+    }
 
     data += this.serializeKey(node.key);
     data += ': ';
@@ -591,9 +596,18 @@ export class Serializer {
   serializePropertyZod(node: PropertyNode) {
     let data = '';
 
+    if (node.description && node.description.length > 0) {
+      data += `/** ${node.description} */` + '\n  '
+    }
+
     data += this.serializeKeyZod(node.key);
     data += ': ';
     data += this.serializeExpressionZod(node.value);
+
+    if (node.description && node.description.length > 0) {
+      data += `.describe(${JSON.stringify(node.description)})`
+    }
+
     data += ',\n';
 
     return data;
