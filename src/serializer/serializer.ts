@@ -301,8 +301,10 @@ export class Serializer {
   serializeProperty(node: PropertyNode) {
     let data = '';
 
-    if (node.description && node.description.length > 0) {
-      data += `/** ${node.description} */` + '\n  '
+    const desc = node.description?.trim()
+
+    if (desc && desc.length > 0) {
+      data += `/** ${desc} */\n`
     }
 
     data += this.serializeKey(node.key);
@@ -596,16 +598,18 @@ export class Serializer {
   serializePropertyZod(node: PropertyNode) {
     let data = '';
 
-    if (node.description && node.description.length > 0) {
-      data += `/** ${node.description} */` + '\n  '
+    const desc = node.description?.trim()
+
+    if (desc && desc.length > 0) {
+      data += `/** ${desc} */\n`
     }
 
     data += this.serializeKeyZod(node.key);
     data += ': ';
     data += this.serializeExpressionZod(node.value);
 
-    if (node.description && node.description.length > 0) {
-      const description = JSON.stringify(node.description)
+    if (desc && desc.length > 0) {
+      const description = JSON.stringify(desc)
 
       if (description.length > 2) {
         data += `.describe(${description})`
