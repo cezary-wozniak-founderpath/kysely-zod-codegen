@@ -10,6 +10,13 @@ export class ClickhouseDialect extends Dialect {
   async createKyselyDialect(options: CreateKyselyDialectOptions) {
     const { ClickhouseDialect } = await import('@founderpath/kysely-clickhouse');
 
-    return new ClickhouseDialect();
+    const { origin: url, username, password, pathname } = new URL(options.connectionString)
+    const database = pathname.replace(/^\//, '')
+
+    return new ClickhouseDialect({
+      options: {
+        url, username, password, database
+      }
+    });
   }
 }
