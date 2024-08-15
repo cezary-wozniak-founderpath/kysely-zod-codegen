@@ -31,6 +31,12 @@ dependencies:
     version: 3.22.4
 
 devDependencies:
+  '@clickhouse/client':
+    specifier: ^1.4.1
+    version: 1.4.1
+  '@founderpath/kysely-clickhouse':
+    specifier: ^1.4.0
+    version: 1.4.0(@clickhouse/client@1.4.1)(kysely@0.27.3)
   '@google-cloud/bigquery':
     specifier: ^7.3.0
     version: 7.3.0
@@ -322,6 +328,17 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
+  /@clickhouse/client-common@1.4.1:
+    resolution: {integrity: sha512-f5eoTrUSDplrMoi3ddeZ0MzGTn0iGMByEQ8j63eVMoBSOI2+F6jEIPcW2tWofT79Rvnn3RRlveYcShiaIiCJyw==}
+    dev: true
+
+  /@clickhouse/client@1.4.1:
+    resolution: {integrity: sha512-12iV+MeykxdQySRFHwaVU+hKUv3JP6kdwOI+z3zzyfPVYHynTlV8emJjjGZR0+VfRaj3PCMuQfryfsJ82nh9WQ==}
+    engines: {node: '>=16'}
+    dependencies:
+      '@clickhouse/client-common': 1.4.1
+    dev: true
+
   /@cspotcode/source-map-support@0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
@@ -373,6 +390,17 @@ packages:
   /@eslint/js@8.55.0:
     resolution: {integrity: sha512-qQfo2mxH5yVom1kacMtZZJFVdW+E70mqHMJvVg6WTLo+VBuQJ4TojZlfWBjK0ve5BdEeNAVxOsl/nvNMpJOaJA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: true
+
+  /@founderpath/kysely-clickhouse@1.4.0(@clickhouse/client@1.4.1)(kysely@0.27.3):
+    resolution: {integrity: sha512-Aa94GUeBuPrI7xdp9v9pCdny/fw3PdNpE5pMNWW8mPMcXtoVH9KJbYH7BTJSktchXJZ6QMWw6Enq7YeEYYykmA==}
+    peerDependencies:
+      '@clickhouse/client': '*'
+      kysely: '*'
+    dependencies:
+      '@clickhouse/client': 1.4.1
+      bluebird: 3.7.2
+      kysely: 0.27.3
     dev: true
 
   /@google-cloud/bigquery@7.3.0:

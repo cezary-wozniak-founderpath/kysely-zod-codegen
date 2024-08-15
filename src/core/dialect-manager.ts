@@ -1,3 +1,4 @@
+
 import {
   BigqueryDialect,
   BunSqliteDialect,
@@ -6,11 +7,13 @@ import {
   PostgresDialect,
   SqliteDialect,
 } from '../dialects';
-import { Dialect } from './dialect';
+import { ClickhouseDialect } from '../dialects/clickhouse';
+import type { Dialect } from './dialect';
 
 export type DialectName =
   | 'bigquery'
   | 'bun-sqlite'
+  | 'clickhouse'
   | 'libsql'
   | 'mysql'
   | 'postgres'
@@ -24,6 +27,8 @@ export class DialectManager {
     switch (name) {
       case 'bigquery':
         return new BigqueryDialect();
+      case 'clickhouse':
+        return new ClickhouseDialect();
       case 'bun-sqlite':
         return new BunSqliteDialect();
       case 'libsql':
