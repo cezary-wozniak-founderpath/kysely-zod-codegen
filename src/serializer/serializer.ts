@@ -476,21 +476,44 @@ export class Serializer {
   }
 
   serializeIdentifierZod(node: IdentifierNode) {
+
+    if (node.name.includes('Decimal')) {
+      return 'z.coerce.number()';
+    }
+
     switch (node.name) {
+      case 'Object':
       case 'Json':
         return 'z.unknown()';
       case 'boolean':
+      case 'Boolean':
         return 'z.boolean()';
       case 'Date':
+      case 'Date32':
+      case 'DateTime':
+      case 'DateTime64':
         return 'z.coerce.date()';
       case 'null':
+      case 'Nullable':
         return 'z.null()';
       case 'Decimal':
       case 'Int8':
+      case 'Int16':
+      case 'Int32':
+      case 'Int64':
+      case 'Int128':
+      case 'Int256':
+      case 'UInt8':
+      case 'UInt16':
+      case 'UInt32':
+      case 'UInt64':
+      case 'UInt128':
+      case 'UInt256':
       case 'number':
       case 'Numeric':
         return 'z.coerce.number()';
       case 'string':
+      case 'String':
         return 'z.string()';
       case 'Timestamp':
         return 'z.coerce.date()';
