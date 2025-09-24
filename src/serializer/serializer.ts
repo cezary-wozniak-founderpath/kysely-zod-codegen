@@ -678,7 +678,7 @@ export class Serializer {
       const [_first, second] = node.args;
 
       // Only use nullable serialization if the second argument is actually null
-      if (second && second.type === 'Identifier' && second.name === 'null') {
+      if (second && second.type === NodeType.IDENTIFIER && second.name === 'null') {
         return this.serializeNullableExpressionZod(node);
       }
     }
