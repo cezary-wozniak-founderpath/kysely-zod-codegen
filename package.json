@@ -1,6 +1,6 @@
 {
   "name": "@maktouch/kysely-zod-codegen",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "author": "Makara Sok",
   "license": "MIT",
   "main": "./dist/index.js",
