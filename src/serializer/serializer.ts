@@ -675,7 +675,12 @@ export class Serializer {
   serializeUnionExpressionZod(node: UnionExpressionNode) {
 
     if (node.args.length === 2) {
-      return this.serializeNullableExpressionZod(node)
+      const [_first, second] = node.args;
+
+      // Only use nullable serialization if the second argument is actually null
+      if (second && second.type === 'Identifier' && second.name === 'null') {
+        return this.serializeNullableExpressionZod(node);
+      }
     }
 
     let data = 'z.enum([';
